@@ -123,7 +123,7 @@ public class ORSServiceConnectorTest {
 		expected.setApiType("ORS");
 		expected.setDistance(2499);
 		expected.setDistanceStr("2,5 km");
-		expected.setDuration(306);
+		expected.setDuration(306.1f);
 		expected.setDurationStr("5m 6s");
 		expected.setTimingMode(true);
 		expected.setTimes(output.getTimes());

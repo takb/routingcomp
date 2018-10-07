@@ -94,7 +94,7 @@ public class ORSServiceConnector implements ServiceConnector {
 		}
 		logger.info("- submitting query to remote service");
 		// query submit
-		JSONObject qureyResult = WebServiceUtil.getJSONResponse(queryURL);
+		JSONObject queryResult = WebServiceUtil.getJSONResponse(queryURL);
 
 		if (this.timingMode) {
 			times.put("process", System.nanoTime());
@@ -102,22 +102,22 @@ public class ORSServiceConnector implements ServiceConnector {
 		logger.info("- processing query result");
 		// process result
 		String errorMessage = "";
-		if (qureyResult.has("error")) {
+		if (queryResult.has("error")) {
 			try {
 				// returned error may be a string containing an error message or an object containing a code and message
-				errorMessage = qureyResult.getString("error");				
+				errorMessage = queryResult.getString("error");				
 			} catch (JSONException e) {
 				// error is object 
-				errorMessage = "#" + qureyResult.getJSONObject("error").getInt("code") + " " + qureyResult.getJSONObject("error").getString("message");				
+				errorMessage = "#" + queryResult.getJSONObject("error").getInt("code") + " " + queryResult.getJSONObject("error").getString("message");				
 			}
-			if (qureyResult.has("http_status") && qureyResult.getInt("http_status") == 403) {
+			if (queryResult.has("http_status") && queryResult.getInt("http_status") == 403) {
 				this.enabled = false;
 				logger.severe("ORSServiceConnector is not configured properly. Terminating further operations on this connector.");
 				errorMessage += " - ORSServiceConnector is not configured properly. Terminating further operations on this connector.";
 			}
 			result.setErrorMessage(errorMessage);				
 		} else {
-			JSONObject summary = qureyResult.getJSONArray("routes").getJSONObject(0).getJSONObject("summary");
+			JSONObject summary = queryResult.getJSONArray("routes").getJSONObject(0).getJSONObject("summary");
 			String durationStr = Duration.ofSeconds(summary.getInt("duration")).toString().substring(2).replaceAll("(\\d[HMS])(?!$)", "$1 ").toLowerCase();
 			String distanceStr = summary.getInt("distance") > 1000 ? String.format("%.1f km", (float)summary.getInt("distance") / 1000) : summary.get("distance").toString();
 			result.setDistanceStr(distanceStr);
