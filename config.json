@@ -1,0 +1,24 @@
+{
+	"debug": false,
+	"timing": true,
+	"apis": [
+		{
+			"type": "Google",
+			"key": "API key for Google Directions API",
+			"params": {
+				"mode": "driving"
+			}
+		},
+		{
+			"type": "ORS",
+			"key": "API key for OpenRouteService API",
+			"params": {
+				"language": "de",
+				"options": {
+					"maximum_speed": 100,
+					"avoid_features": "ferries|tollways"
+				}
+			}
+		}
+	]
+}
