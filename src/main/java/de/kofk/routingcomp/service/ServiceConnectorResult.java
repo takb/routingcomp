@@ -17,8 +17,8 @@ public class ServiceConnectorResult {
 	private double queryEndLatitude;
 	private String errorMessage;
 	private String apiType;
-	private int distance;
-	private int duration;
+	private float distance;
+	private float duration;
 	private String distanceStr;
 	private String durationStr;
 	private HashMap<String, Long> times;
@@ -61,19 +61,19 @@ public class ServiceConnectorResult {
 				this.queryEndLatitude);
 	}
 
-	public int getDistance() {
+	public float getDistance() {
 		return distance;
 	}
 
-	public void setDistance(int distance) {
+	public void setDistance(float distance) {
 		this.distance = distance;
 	}
 
-	public int getDuration() {
+	public float getDuration() {
 		return duration;
 	}
 
-	public void setDuration(int duration) {
+	public void setDuration(float duration) {
 		this.duration = duration;
 	}
 
@@ -143,13 +143,12 @@ public class ServiceConnectorResult {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format(this.apiType + " (Query: %s): ", this.getQueryIdentifier()));
-		sb.append((this.errorMessage.isEmpty() ? "SUCCESS" : "ERROR: " + this.errorMessage) + "\n");
+		sb.append(this.apiType + ": " + (this.errorMessage.isEmpty() ? "SUCCESS" : "ERROR: " + this.errorMessage));
 		if (this.errorMessage.isEmpty()) {
-			sb.append(String.format("Result: distance %s (%sm), duration %s (%ss)\n", this.distanceStr, this.distance, this.durationStr, this.duration));
+			sb.append(String.format(" Result: distance %s (%sm), duration %s (%ss)", this.distanceStr, this.distance, this.durationStr, this.duration));
 		}
 		if (this.timingMode) {
-			sb.append(String.format("Processing time: INIT %12.6fms, REQUEST %12.6fms, PROCESS %12.6fms\n",
+			sb.append(String.format("\nProcessing time: INIT %12.6fms, REQUEST %12.6fms, PROCESS %12.6fms",
 					this.getInitTime(), this.getRequestTime(), this.getProcessTime()));
 		}
 		return sb.toString();

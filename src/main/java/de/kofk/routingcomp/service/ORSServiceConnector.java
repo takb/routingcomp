@@ -121,9 +121,9 @@ public class ORSServiceConnector implements ServiceConnector {
 			String durationStr = Duration.ofSeconds(summary.getInt("duration")).toString().substring(2).replaceAll("(\\d[HMS])(?!$)", "$1 ").toLowerCase();
 			String distanceStr = summary.getInt("distance") > 1000 ? String.format("%.1f km", (float)summary.getInt("distance") / 1000) : summary.get("distance").toString();
 			result.setDistanceStr(distanceStr);
-			result.setDistance(summary.getInt("distance"));
+			result.setDistance(summary.getFloat("distance"));
 			result.setDurationStr(durationStr);
-			result.setDuration(summary.getInt("duration"));
+			result.setDuration(summary.getFloat("duration"));
 		}
 
 		if (this.timingMode) {

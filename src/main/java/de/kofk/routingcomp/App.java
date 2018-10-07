@@ -113,26 +113,56 @@ public class App {
 		LOGGER.info(String.format("Service connectors loaded: %s APIs", connectors.size()));
 
 		// query & output
-		HashMap<String, Double> requestTimesTotalByAPI = new HashMap<String, Double>();
+		HashMap<String, Double> requestTimesSumByAPI = new HashMap<String, Double>();
 		HashMap<String, Integer> numResultsByAPI = new HashMap<String, Integer>();
+		float distanceDeltaSum = 0;
+		float durationDeltaSum = 0;
+		int deltaCount = 0;
 		for (QueryCoordinates c : coordinates) {
-			LOGGER.info(String.format("Processing record no. %s - coordinates: %s, %s => %s, %s", coordinates.indexOf(c) + 1,
-					c.startLongitude, c.startLatitude, c.endLongitude, c.endLatitude));
+			LOGGER.info(String.format("Processing record no. %s - coordinates: %s, %s => %s, %s",
+					coordinates.indexOf(c) + 1, c.startLongitude, c.startLatitude, c.endLongitude, c.endLatitude));
+			System.out.println("Query: " + c);
+			ArrayList<ServiceConnectorResult> resultsForCurrentCoordinates = new ArrayList<ServiceConnectorResult>();
 			for (ServiceConnector sc : connectors) {
 				ServiceConnectorResult result = sc.queryService(c);
 				System.out.println(result);
 				if (result.isTimingMode() && !result.hasError()) {
 					String key = result.getApiType();
-					requestTimesTotalByAPI.put(key,
-							(requestTimesTotalByAPI.getOrDefault(key, 0.0)) + result.getRequestTime());
+					requestTimesSumByAPI.put(key,
+							(requestTimesSumByAPI.getOrDefault(key, 0.0)) + result.getRequestTime());
 					numResultsByAPI.put(key, (numResultsByAPI.getOrDefault(key, 0)) + 1);
 				}
+				if (!result.hasError()) {
+					resultsForCurrentCoordinates.add(result);
+				}
+			}
+			if (resultsForCurrentCoordinates.size() == 2) {
+				float distanceDelta = resultsForCurrentCoordinates.get(1).getDistance()
+						- resultsForCurrentCoordinates.get(0).getDistance();
+				float durationDelta = resultsForCurrentCoordinates.get(1).getDuration()
+						- resultsForCurrentCoordinates.get(0).getDuration();
+				distanceDeltaSum += distanceDelta;
+				durationDeltaSum += durationDelta;
+				deltaCount++;
+				System.out.println(String.format("Difference in distance: %+10.2f meters", distanceDelta));
+				System.out.println(String.format("Difference in duration: %+10.2f seconds\n", durationDelta));
+			} else {
+				System.out.println("");				
 			}
 		}
-		System.out.println("Average request time: ");
-		for (String key : requestTimesTotalByAPI.keySet()) {
-			double avgTime = requestTimesTotalByAPI.get(key) / numResultsByAPI.getOrDefault(key, 1);
-			System.out.println(String.format("%1$10s ", key) + String.format("%20.6f ms ", avgTime) + String.format(" / %5d call(s)", numResultsByAPI.getOrDefault(key, 1)));
+		if (deltaCount > 0) {
+			System.out.println(String.format("Average difference in distance: %+10.2f meters",
+					(float) distanceDeltaSum / deltaCount));
+			System.out.println(String.format("Average difference in duration: %+10.2f seconds\n",
+					(float) durationDeltaSum / deltaCount));
+		}
+		if (timingMode) {
+			System.out.println("Average request time: ");
+			for (String key : requestTimesSumByAPI.keySet()) {
+				double avgTime = requestTimesSumByAPI.get(key) / numResultsByAPI.getOrDefault(key, 1);
+				System.out.println(String.format("%1$10s ", key) + String.format("%20.6f ms ", avgTime)
+						+ String.format(" / %5d call(s)", numResultsByAPI.getOrDefault(key, 1)));
+			}
 		}
 	}
 
