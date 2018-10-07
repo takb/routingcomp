@@ -73,50 +73,8 @@ public class GoogleServiceConnector implements ServiceConnector {
 		}
 		logger.info("- submitting query to remote service");
 		// query submit
-//		JSONObject queryResult = WebServiceUtil.getJSONResponse(queryURL);
-		JSONObject queryResult = new JSONObject("{\r\n" + "	\"geocoded_waypoints\": [{\r\n"
-				+ "			\"geocoder_status\": \"OK\",\r\n"
-				+ "			\"place_id\": \"ChIJ6xl9TZUAnz0RLE6928DY-I4\",\r\n" + "			\"types\": [\"route\"]\r\n"
-				+ "		}, {\r\n" + "			\"geocoder_status\": \"OK\",\r\n"
-				+ "			\"place_id\": \"ChIJ6xl9TZUAnz0RLE6928DY-I4\",\r\n" + "			\"types\": [\"route\"]\r\n"
-				+ "		}\r\n" + "	],\r\n" + "	\"routes\": [{\r\n" + "			\"bounds\": {\r\n"
-				+ "				\"northeast\": {\r\n" + "					\"lat\": 8.687348199999999,\r\n"
-				+ "					\"lng\": 49.4222571\r\n" + "				},\r\n"
-				+ "				\"southwest\": {\r\n" + "					\"lat\": 8.6841524,\r\n"
-				+ "					\"lng\": 49.4171906\r\n" + "				}\r\n" + "			},\r\n"
-				+ "			\"copyrights\": \"Map data ©2018\",\r\n" + "			\"legs\": [{\r\n"
-				+ "					\"distance\": {\r\n" + "						\"text\": \"0.7 km\",\r\n"
-				+ "						\"value\": \"661\"\r\n" + "					},\r\n"
-				+ "					\"duration\": {\r\n" + "						\"text\": \"1 min\",\r\n"
-				+ "						\"value\": 30\r\n" + "					},\r\n"
-				+ "					\"end_address\": \"Unnamed Road, Somalia\",\r\n"
-				+ "					\"end_location\": {\r\n" + "						\"lat\": 8.6841524,\r\n"
-				+ "						\"lng\": 49.4222571\r\n" + "					},\r\n"
-				+ "					\"start_address\": \"Unnamed Road, Somalia\",\r\n"
-				+ "					\"start_location\": {\r\n" + "						\"lat\": 8.687348199999999,\r\n"
-				+ "						\"lng\": 49.4171906\r\n" + "					},\r\n"
-				+ "					\"steps\": [{\r\n" + "							\"distance\": {\r\n"
-				+ "								\"text\": \"0.7 km\",\r\n"
-				+ "								\"wtfvaluea\": 661\r\n" + "							},\r\n"
-				+ "							\"duration\": {\r\n"
-				+ "								\"text\": \"1 min\",\r\n"
-				+ "								\"value\": 30\r\n" + "							},\r\n"
-				+ "							\"end_location\": {\r\n"
-				+ "								\"lat\": 8.6841524,\r\n"
-				+ "								\"lng\": 49.4222571\r\n" + "							},\r\n"
-				+ "							\"html_instructions\": \"Head <b>southeast<\\/b>\",\r\n"
-				+ "							\"polyline\": {\r\n"
-				+ "								\"points\": \"}v_t@mxrlH~Ru^\"\r\n" + "							},\r\n"
-				+ "							\"start_location\": {\r\n"
-				+ "								\"lat\": 8.687348199999999,\r\n"
-				+ "								\"lng\": 49.4171906\r\n" + "							},\r\n"
-				+ "							\"travel_mode\": \"DRIVING\"\r\n" + "						}\r\n"
-				+ "					],\r\n" + "					\"traffic_speed_entry\": [],\r\n"
-				+ "					\"via_waypoint\": []\r\n" + "				}\r\n" + "			],\r\n"
-				+ "			\"overview_polyline\": {\r\n" + "				\"points\": \"}v_t@mxrlH~Ru^\"\r\n"
-				+ "			},\r\n" + "			\"summary\": \"\",\r\n" + "			\"warnings\": [],\r\n"
-				+ "			\"waypoint_order\": []\r\n" + "		}\r\n" + "	],\r\n" + "	\"status\": \"OK\"\r\n"
-				+ "}\r\n" + "");
+		JSONObject queryResult = WebServiceUtil.getJSONResponse(queryURL);
+
 		if (this.timingMode) {
 			times.put("process", System.nanoTime());
 		}
